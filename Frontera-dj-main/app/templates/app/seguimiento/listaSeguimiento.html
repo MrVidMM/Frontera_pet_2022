@@ -1,0 +1,93 @@
+{% extends 'app/base_admin.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block inicio %}
+
+{% endblock %}
+    
+{% block contenido %}    
+<section class="py-4  osahan-main-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h2>Listado De Productos</h2>
+                        <hr>
+                        <table class="table table-condensed table-hover table-striped table-responsive-sm bg-light border">
+                            <thead>
+                                <tr>
+                                    <th>USUARIO</th>
+                                    <th>PRODUCTO</th>
+                                    <th>VALOR</th>
+                                    <th>CANTIDAD</th>
+                                    <th>ESTADO</th>
+                                    <th>MODIFICAR ESTADO</th>
+                                    <th>OPCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for aux in listaSeguimiento %}    
+                                <tr>
+                                    <td scope="row">{{ aux.usuario }}</td>
+                                    <td>{{ aux.producto.nombre }}</td>
+                                    <td>{{ aux.producto.precio }}</td>
+                                    <td>{{ aux.cantidad }}</td>
+                                    <td>{{ aux.estado }}</td>
+                                    <td>
+                                        <form method="POST" enctype="multipart/form-data">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="codigo_producto" id="codigo_producto" value="{{aux.codigo}}">
+                                            {% if aux.estado == "pago verificado" %}
+                                                <select class="browser-default" name="selecciona" id="seleccion">  
+                                                    <option value="{{ aux.estado }}" selected>{{aux.estado}}</option>
+                                                    <option value="preparacion">preparacion</option>
+                                                    <option value="reparto">reparto</option>
+                                                    <option value="entregado">entregado</option>
+                                                </select>
+                                                <input type="submit" class="btn btn-success  mt-3" value="Modificar">
+                                            {% endif %}
+                                            {% if aux.estado == "preparacion" %}
+                                                <select class="browser-default"  name="selecciona" id="seleccion">
+                                                    <option value="pago verificado">pago verificado</option>
+                                                    <option value="{{ aux.estado }}" selected>{{aux.estado}}</option>
+                                                    <option value="reparto">reparto</option>
+                                                    <option value="entregado">entregado</option>
+                                                </select>
+                                                <input type="submit" class="btn btn-success  mt-3" value="Modificar">  
+                                            {% endif %}
+                                            {% if aux.estado == "reparto" %}
+                                                <select class="browser-default"  name="selecciona" id="seleccion">
+                                                    <option value="pago verificado">pago verificado</option>
+                                                    <option value="preparacion">preparacion</option>
+                                                    <option value="{{aux.estado}}" selected>{{aux.estado}}</option>
+                                                    <option value="entregado">entregado</option>
+                                                </select>
+                                                <input type="submit" class="btn btn-success  mt-3" value="Modificar">
+                                            {% endif %}
+                                            {% if aux.estado == "entregado" %}
+                                                <select class="browser-default"  name="selecciona" id="seleccion">
+                                                    <option value="pago verificado">pago verificado</option>
+                                                    <option value="preparacion">preparacion</option>
+                                                    <option value="reparto">reparto</option>
+                                                    <option value="{{ aux.estado }}" selected>{{aux.estado}}</option>
+                                                </select>
+                                                <input type="submit" class="btn btn-success  mt-3" value="Modificar"> 
+                                            {% endif %}
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <a href="{% url 'eliminarSeguimiento' aux.codigo %}" class="btn btn-danger">Eliminar</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

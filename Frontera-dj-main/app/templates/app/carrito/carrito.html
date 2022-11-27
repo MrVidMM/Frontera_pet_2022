@@ -1,0 +1,155 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block alerta %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.9/sweetalert2.css" integrity="sha512-kUA+6aUE6xhYbRqzqHsWMnoc/rgcfAoqMh8dCYHTVUYHlLYlhFoNYm1qP08JTY69gN0LiwbtlYCT2bQ1mbqB4Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock alerta %}
+
+{% block contenido %}    
+    <div class="carrito">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12 col-12">
+                    <div class="banner-carrito bg-primary text-light m-4 rounded-pill shadow d-flex">
+                        <img src="{% static 'app/img/carrito/icon-carrito.png' %}" alt="" width="70" >
+                        <h2 class="m-5">Carrito de Compra.</h2>
+                    </div>
+                </div>
+                
+                <div class="col-lg-8 col-sm-8 col-12">
+                    {% for aux in listaCarrito %}
+                    <div class="col-lg-12 col-12">
+                        <div class="carrito-cards d-flex">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <h4 class="card-title">{{ aux.producto.nombre}}</h4>
+                                    <p class="card-text">Marca: {{ aux.producto.marca }}</p>
+                                    <p class="card-text">Precio: ${{ aux.producto.precio }}</p>
+                                    <p class="card-text">Cantidad: {{ aux.cantidad }}</p>
+                                    <a href="{% url 'devolver' aux.producto.codigo %}" class="btn btn-danger">Eliminar producto</a>
+                                </div>
+                                {% if aux.producto.imagen %}
+                                    <img class="card-img-top" src="{{ aux.producto.imagen.url }}" alt="Card image">
+                                    {% else %}
+                                    <img src="{% static 'app/img/stock/stock-juego-1.jpg' %}" alt="">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="col-lg-4 col-sm-4 col-12">        
+                    <div class="total-pagar">
+                        <h4 class="d-flex justify-content-between align-items-center mb-3 mt-3">
+                            <span class="text-light">Total</span>
+                            <span class="badge bg-primary rounded-pill fs-3">{{ contador }}</span>
+                        </h4>
+                        <ul class="list-group mb-3">
+                            {% if usuario == 1 %}
+                            {% for aux in listaCarrito %}
+                            <!--Primer Producto-->
+                            <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">{{ aux.codigo.nombre }}</h6>
+                                <small class="text-muted">{{ aux.producto.tipo }}</small>
+                            </div>
+                            <span class="text-muted">${{ aux.producto.precio }} x {{ aux.cantidad }}</span>
+                            </li>
+                            {% endfor %}
+                            <!--Descuento-->
+                            <li class="list-group-item d-flex justify-content-between bg-light">
+                            <div class="text-success">
+                                <h6 class="my-0">Descuento Suscripción</h6>
+                            </div>
+                            <span class="text-success">${{ descuento }}</span>
+                            </li>
+
+                            <!--Total-->
+                            <li class="list-group-item d-flex justify-content-between">
+                            <span>Total (CLP)</span>
+                            <strong>${{ totalsub }}</strong>
+                            </li>
+
+                            {% elif usuario == 0 %}
+                            {% for aux in listaCarrito %}
+                            <!--Primer Producto-->
+                            <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <h6 class="my-0">{{ aux.producto.nombre }}</h6>
+                                <small class="text-muted">{{ aux.producto.tipo }}</small>
+                            </div>
+                            <span class="text-muted">${{ aux.producto.precio }} x {{ aux.cantidad }}</span>
+                            </li>
+                            {% endfor %}
+                            <!--Descuento-->
+                            <li class="list-group-item d-flex justify-content-between bg-light">
+                            <div class="text-success">
+                                <h6 class="my-0">Descuento Suscripción</h6>
+                            </div>
+                            <span class="text-danger">{{ noSus }}</span>
+                            </li>
+
+                            <!--Total-->
+                            <li class="list-group-item d-flex justify-content-between">
+                            <span>Total (CLP)</span>
+                            <strong>${{ total }}</strong>
+                            </li>
+                            {% endif %}
+                        </ul>
+                        <!--BTN Pagar--> 
+                        <form class="card p-2" action="" method="POST"> <!--Botones que no son botones, funciona? si, se ve bien? si, todo de bien entonces-->
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-success">Pagar</button>
+                            <br>
+                            <a href="{% url 'stock' %}" class="btn btn-warning">
+                                Seguir Comprando
+                            </a>
+                        </form><br> <!--Br totalmente imprescindible-->
+
+                        <!--Mediso de pago-->
+                        <div class="medio-pago">
+                            <form class="card p-2">
+                                <div class="input-group d-flex justify-content-center">
+                                    <h4>Medios de Pago Disponibles:</h4>
+                                    <img src="{% static 'app/img/carrito/medios-pago-carrito.png' %}" width="350px" alt="">
+                                </div>
+                            </form> 
+                        </div>
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <!-- antiguo boton vaciar <button type="submit" class="btn btn-danger btn-vaciar"><a href="{% url 'limpiarCarrito' %}" class="text-light" style="text-decoration: none;">Vaciar carrito</a><i class="fa-solid fa-trash"></i></button>-->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+{% endblock %}
+
+{% block sweetalert %}
+{% if mensaje == "pago verificado" %}
+    <script>
+        Swal.fire({
+        icon: 'warning',
+        title: 'Tu pago esta siendo comprobado',
+        text: 'Un momento por favor!',
+        
+        confirmButtonText: "Continuar",
+        confirmButtonColor: '#3085d6',
+        
+      }).then((result) => {
+        if (result.value) {
+          Swal.fire(
+            'Aprobado!',
+            'Tu pago a sido recibido!',
+            'success'
+          ).then(function() {
+            window.location.href = "/stock/";
+          })
+        }
+      })
+    </script>
+    {% endif %}
+{% endblock %}

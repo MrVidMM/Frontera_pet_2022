@@ -1,0 +1,186 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block alerta %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.9/sweetalert2.css" integrity="sha512-kUA+6aUE6xhYbRqzqHsWMnoc/rgcfAoqMh8dCYHTVUYHlLYlhFoNYm1qP08JTY69gN0LiwbtlYCT2bQ1mbqB4Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock alerta %}
+
+{% block contenido %}
+    <section>
+        <div class="container-fluid">
+            <!--Titulo-->
+            <div class="col-lg-12 col-sm-12 col-12">
+                <div class="titulo-stock d-flex">
+                    <h3>Productos</h3>
+                </div>
+            </div>
+
+            <!--col isquierda-->
+            <div class="col-lg-12 col-sm-12 col-12">
+                <div class="row">
+                    <div class="col-lg-2 col-sm-2 col-12">
+                        <!--Filtros-->
+                    <div class="filtros">
+                        <h2>Filtros:</h2>
+                        <div class="dropdown  mb-4 mt-4 d-grid">
+                            <button class="btn btn-drop btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Paginas
+                            </button>
+                            <ul class="dropdown-menu " aria-labelledby="dropdownMenuButton">
+                                <li><a class="dropdown-item" href="{% url 'stock' %}">Stock</a></li>
+                                <li><a class="dropdown-item" href="{% url 'stockApi' %}">API</a></li>
+                                <li><a class="dropdown-item" href="{% url 'stockGames' %}">Games</a></li>
+                                <li><a class="dropdown-item" href="{% url 'stockDigi' %}">Digimon</a></li>
+                                <li><a class="dropdown-item" href="{% url 'stockRM' %}">Rick y Morty</a></li>
+                            </ul>    
+                        </div>
+                        <div class="dropdown mb-4 mt-4 d-grid">
+                            <button class="btn btn-categoria btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categoria
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li><a class="dropdown-item" href="#">Juguetes</a></li>
+                                <li><a class="dropdown-item" href="#">Ropa</a></li>
+                                <li><a class="dropdown-item" href="#">Utiles</a></li>
+                            </ul>
+                        </div>
+                        <div class="dropdown mb-4 d-grid">
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                Marca
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <li><a class="dropdown-item" href="">Ferrarix</a></li>
+                                <li><a class="dropdown-item" href="">Goofy</a></li>
+                                <li><a class="dropdown-item" href="">Gucci</a></li>
+                                <li><a class="dropdown-item" href="">Gemelos</a></li>
+                                <li><a class="dropdown-item" href="">Monka</a></li>
+                                <li><a class="dropdown-item" href="">Marika</a></li>
+                            </ul>
+                        </div>
+                        <form action="" class="mb-4" style="color: rgb(63, 10, 255);">
+                            <label for="Precio" class="form-label">Precio:</label>
+                            <div class="slidecontainer">
+                                <input type="range" min="1" max="100" value="1" class="slider" id="myRange">
+                            </div>
+                            <div class="d-grid mt-3">
+                                <a href="#" class="btn btn-success btn-block mb-3">Aceptar</a>
+                                <a href="{% url 'stock' %}" class="btn btn-danger btn-block">Eliminar Filtros</a>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!--Flecha Volver-->
+                    <div class="flecha-volver d-flex justify-content-center mt-4 display-5 position-fixed ">
+                        <a href="#">
+                            <i class="fa-solid fa-arrow-up-from-bracket bg-dark  p-4 rounded-circle shadow"></i>
+                        </a>
+                    </div>
+                    </div>
+                
+
+                    <!--col medio-->
+                    <div class="col-lg-10 col-sm-10 col-12">
+                        <!--Nav Interno UP-->
+                        <div class="nav-stock mb-3">
+                            <nav class="d-flex justify-content-between">
+                                <img class="img-relleno" src="{% static 'app/img/general/logo-FronteraPet.png' %}" width="100px" alt="">
+                                <form class="form-inline d-flex mb-3">
+                                    <input class="form-control mr-sm-2" style="width: 200px;" type="search" placeholder="Search" aria-label="Search">
+                                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+                                </form>
+                                <div class="btn-group mb-3">
+                                    <a href="stock.html" class="btn btn-primary"><i class="fa-solid fa-angles-left"></i></a>
+                                    <a href="stock.html" class="btn btn-primary"><i class="fa-solid fa-angle-left"></i></a>
+                                    <a href="stock.html" class="btn btn-primary active">1</a>
+                                    <a href="stock_2.html" class="btn btn-primary">2</a>
+                                    <a href="stock_3.html" class="btn btn-primary">3</a>
+                                    <a href="stock_2.html" class="btn btn-primary"><i class="fa-solid fa-angle-right"></i></a>
+                                    <a href="stock_3.html" class="btn btn-primary"><i class="fa-solid fa-angles-right"></i></a>
+                                </div>
+                            </nav>
+                        </div>
+                        <!--Card Productos-->
+                        <div class="col-lg-12 col-sm-12 col-12">
+                            <div class="row card-stock justify-content-start">
+                                
+                                {% for aux in listaApi %}
+                                <!-- Seccion 1 -->
+                                <div class="col-lg-4 col-sm-4 col-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">{{ aux.marca | capfirst }}</h4>
+                                            <p class="card-text">{{ aux.nombre | title }}</p>
+                                            <p class="card-text">Precio: ${{ aux.precio | intcomma }}</p>
+                                            <p class="text-secondary">Cant. {{ aux.stock }}</p>
+                                              
+                                        </div>
+                                        {% if aux.imagen %}
+                                        <img class="card-img-top" width="100px" src="{{ aux.imagen }}" alt="Card image">
+                                        {% else %}
+                                        <img src="{% static 'app/img/stock/stock-juego-1.jpg' %}" class="img-fluid item-img w-100 mb-3">
+                                        {% endif %}
+                                        
+                                    </div>
+                                    <div class="d-grid mt-2 ">
+                                        <form action="" method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="codigo" id="codigo" value="{{ aux.codigo }}">
+                                            <input type="hidden" name="nombre" id="nombre" value="{{ aux.nombre }}">
+                                            <input type="hidden" name="marca" id="marca" value="{{ aux.marca }}">
+                                            <input type="hidden" name="precio" id="precio" value="{{ aux.precio }}">
+                                            <input type="hidden" name="stock" id="stock" value="{{ aux.stock }}">
+                                            <input type="hidden" name="tipo" id="tipo" value="{{ aux.tipo }}">
+                                            <input type="hidden" name="imagen" id="imagen" value="{{ aux.imagen }}">
+                                            <div class="d-grid">
+                                                <button type="submit" class="btn btn-warning btn-block mb-2">Agregar al Carrito</button>
+                                            </div>
+                                        </form>
+                                        
+                                        
+                                        <a href="{% url 'pagar' %}" class="btn btn-danger btn-block mb-2">Comprar</a>
+                                    </div>
+                                </div>
+                                {% endfor %} 
+
+                                {% if messages %}
+                                    {% for msj in messages %}
+                                        <script>
+                                            Swal.fire({
+                                                title: 'Agregado al carrito!',
+                                                text: '{{ msj }}',
+                                                icon: 'success',
+                                                showConfirmButton: false,
+                                                timer: 2000
+                                            });
+                                        </script>
+                                    {% endfor %}
+                                {% endif %}  
+                            </div>
+                        </div>
+                        <!--Nav Interno DOWN-->
+                        <div class="nav-stock mb-3">
+                            <nav class="d-flex justify-content-between">
+                                <img class="img-relleno" src="{% static 'app/img/general/logo-FronteraPet.png' %}" width="100px" alt="">
+                                <form class="form-inline d-flex mb-3">
+                                    <input class="form-control mr-sm-2" style="width: 200px;" type="search" placeholder="Search" aria-label="Search">
+                                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+                                </form>
+                                <div class="btn-group mb-3">
+                                    <a href="stock.html" class="btn btn-primary"><i class="fa-solid fa-angles-left"></i></a>
+                                    <a href="stock.html" class="btn btn-primary"><i class="fa-solid fa-angle-left"></i></a>
+                                    <a href="stock.html" class="btn btn-primary active">1</a>
+                                    <a href="stock_2.html" class="btn btn-primary">2</a>
+                                    <a href="stock_3.html" class="btn btn-primary">3</a>
+                                    <a href="stock_2.html" class="btn btn-primary"><i class="fa-solid fa-angle-right"></i></a>
+                                    <a href="stock_3.html" class="btn btn-primary"><i class="fa-solid fa-angles-right"></i></a>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

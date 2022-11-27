@@ -1,0 +1,9 @@
+django
+pillow
+django-admin-interface
+django-crispy-forms
+crispy-bootstrap5
+mysqlclient
+pymysql
+djangorestframework
+requests

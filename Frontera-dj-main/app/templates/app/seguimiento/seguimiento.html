@@ -1,0 +1,97 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block contenido %}
+{% if producto %}
+<section>
+    <div class="container-fluid">
+        <div class="row text-light">
+            <div class="col-sm-12 col-12"></div>
+            <div class="p-5">
+                <h1 class="display-3 text-center">Bienvenido a tu seguimiento de compras.</h1>
+                <p class="lead mt-5">Estado: {{ estado }}</p>
+                <hr class="my-2 mt-4">
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-1 col"></div>
+            <div class="col-sm-10 col-12">
+                <div class="productos-comprados ">
+                    <div class="row">
+                        <div class="col-lg-8 col-sm-8 col-12">
+                            <div class="col-lg-12 col-12">
+                                <div class="carrito-cards d-flex">
+                                    <div class="card shadow">
+                                        <div class="card-body">
+                                            {% if estado == "pago verificado" %}
+                                            <div class="row">
+                                            <div class="col-sm-4">Preparacion</div>
+                                            <div class="col-sm-4">Reparto</div>
+                                            <div class="col-sm-4">Entregado</div>
+                                            </div>
+                                            <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 5%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            {% endif %}
+                                            {% if estado == "preparacion" %}
+                                            <div class="row">
+                                            <div class="col-sm-4">Preparacion</div>
+                                            <div class="col-sm-4">Reparto</div>
+                                            <div class="col-sm-4">Entregado</div>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 25%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            {% endif %}
+                                            {% if estado == "reparto" %}
+                                            <div class="row">
+                                            <div class="col-sm-4">Preparacion</div>
+                                            <div class="col-sm-4">Reparto</div>
+                                            <div class="col-sm-4">Entregado</div>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 50%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            {% endif %}
+                                            {% if estado == "entregado" %}
+                                            <div class="row">
+                                            <div class="col-sm-4">Preparacion</div>
+                                            <div class="col-sm-4">Reparto</div>
+                                            <div class="col-sm-4">Entregado</div>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="carrito-cards d-flex">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ producto.nombre }} | Marca: {{ producto.marca }}</h4>
+                            <p class="card-text">Precio: ${{ producto.precio }}</p>
+                            <p class="card-text">Estado: {{ estado }}</p>
+                            
+                        </div>
+                       
+                            <img class="card-img-top" src="{{ producto.imagen }}" alt="Card image">
+                            
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="col-sm-1 col"></div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
