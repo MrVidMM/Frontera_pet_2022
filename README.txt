@@ -24,17 +24,23 @@ Requisitos:
 
 7. Abre tu editor de codigo (de preferencia "Visual Studio Code") o consola de comandos
 
-8. Si estas en tu editor de codigo abre la carpeta "Frontera-dj-main"
+8. Abre la terminal y crear un entorno virtual: python -m venv tutorial-env
 
-8.1 Si estas en consola de comandos buscar la ruta de la carpeta "Frontera-dj-main"
+9. Si no tienes instalado python instalalo y repite el paso: https://www.python.org/downloads/
 
-9. En la carpeta "Frontera-dj-main" tendras un archivo llamado "requirements.txt"...
+10. Deberas buscar "myEntorno\Script\activate" en tu consola o terminal y dar enter
 
-10. Deberas instalar cada uno de ellos con el comando: npm install <nombre>
+11. Si estas en tu editor de codigo abre la carpeta "Frontera-dj-main"
 
-11. Una vez terminado ejecuta el proyecto con el comando: python manage.py runserver
+11.1 Si estas en consola de comandos buscar la ruta de la carpeta "Frontera-dj-main"
 
-12. Listo!! Ya tendrias el proyecto en funcionamiento 
+10. En la carpeta "Frontera-dj-main" tendras un archivo llamado "requirements.txt"...
+
+11. Deberas instalar cada uno de ellos con el comando: npm install <nombre>
+
+12. Una vez terminado ejecuta el proyecto con el comando: python manage.py runserver
+
+13. Listo!! Ya tendrias el proyecto en funcionamiento 
 
 Cualquier duda o consulta contactar con David Martinez
 correo: dav.martinez@duocuc.cl
